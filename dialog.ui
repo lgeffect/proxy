@@ -29,7 +29,7 @@
     <attribute name="title">
      <string>Перехват</string>
     </attribute>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QTextEdit" name="proxyTextWindow">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -53,6 +53,22 @@
      </property>
      <property name="checkable">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCommandLinkButton" name="forwardRequest">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>10</y>
+       <width>168</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пропустить запрос</string>
      </property>
     </widget>
    </widget>

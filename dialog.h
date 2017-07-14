@@ -30,7 +30,10 @@ private slots:
 	void on_startProxy_clicked();
 	void newConn();
 	void slotReadClient();
+	void replyFinished();
 
+
+	void on_forwardRequest_clicked();
 
 private:
 	Ui::Dialog *ui;
@@ -45,6 +48,8 @@ private:
 	QNetworkAccessManager *manager;
 	// Очередь запросов
 	QQueue<QByteArray> reqQueue;
+	// Очередь id клиентов
+	QQueue<int> userIdQueue;
 };
 
 #endif // DIALOG_H

@@ -6,6 +6,7 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
 	ui->setupUi(this);
+	on_startProxy_clicked();
 }
 
 Dialog::~Dialog()
@@ -17,7 +18,7 @@ Dialog::~Dialog()
 void Dialog::on_startProxy_clicked()
 {
 	// Выключение сервера
-	if(serverStatus){
+	if(!serverStatus){
 		foreach(int i, SClients.keys()){
 			SClients[i]->close();
 			SClients.remove(i);
@@ -28,8 +29,8 @@ void Dialog::on_startProxy_clicked()
 	}else{ // Иначе включаем
 		tcpServer = new QTcpServer(this);
 		connect(tcpServer, SIGNAL(newConnection()), SLOT(newConn()));
-		if(!tcpServer->listen(QHostAddress::Any, (quint16)ui->proxyPort->value()) && server_status == 0){
-			ui->textEdit->append(tcpServer->errorString());
+		if(!tcpServer->listen(QHostAddress::Any, (quint16)ui->proxyPort->value()) && serverStatus){
+			ui->proxyTextWindow->append(tcpServer->errorString());
 		}else{
 			serverStatus=true;
 		}
@@ -55,14 +56,22 @@ void Dialog::slotReadClient(){
 	int iduser=clientSocket->socketDescriptor();
 	// Читаем присланные данные
 	QByteArray clientRequest = clientSocket->readAll();
+
+	// Если очередь запросов пуста
+	if(reqQueue.isEmpty()){
+		// Показываем содержимое запроса в окне прокси
+		ui->proxyTextWindow->setText(clientRequest);
+		// Делаем возможным пропустить запрос
+		ui->forwardRequest->setEnabled(true);
+	}
 	// Добавляем запрос в очередь запросов
 	reqQueue.enqueue(clientRequest);
-	// Вытаскиваем хост из запроса
+	// Добавляем id клиента в очередь запросов
+	userIdQueue.enqueue(iduser);
+	// Парсим хост из запроса
 	QString clientReqStr = QString(clientRequest);
 	QString resolveHost = clientReqStr.mid(clientReqStr.indexOf("Host:")+6, clientReqStr.indexOf("Connection:")-24);
 
-
-	ui->textEdit->setText(clientReqStr);
 
 	clientSocket->close();
 	SClients.remove(iduser);
@@ -81,7 +90,19 @@ void Dialog::slotReadClient(){
 
 	clientSocket->write(block);
 
-	ui->textEdit->append((clientSocket->readAll()+"\n"));
+	ui->proxyTextWindow->append((clientSocket->readAll()+"\n"));
 	clientSocket->close();
 	SClients.remove(iduser);*/
+}
+
+void Dialog::replyFinished(){}
+
+void Dialog::on_forwardRequest_clicked()
+{
+	if(!reqQueue.isEmpty()){
+		ui->proxyTextWindow->setText(reqQueue.dequeue());
+	}else{
+		ui->proxyTextWindow->setText("");
+		ui->forwardRequest->setEnabled(false);
+	}
 }
