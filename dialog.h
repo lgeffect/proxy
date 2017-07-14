@@ -8,6 +8,12 @@
 #include <QByteArray>
 #include <QDebug>
 
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QUrl>
+#include <QTextCodec>
+
 namespace Ui {
 class Dialog;
 }
@@ -21,16 +27,24 @@ public:
     ~Dialog();
 
 private slots:
-	void on_startIntercept_clicked();
+	void on_startProxy_clicked();
 	void newConn();
 	void slotReadClient();
 
 
 private:
 	Ui::Dialog *ui;
+
+	// Создаем объект сервера
 	QTcpServer *tcpServer;
-	int server_status;
+	// Статус сервера
+	bool serverStatus;
+	// Карта соединений с сервером
 	QMap<int, QTcpSocket*> SClients;
+	// Менеджер http запросов
+	QNetworkAccessManager *manager;
+	// Очередь запросов
+	QQueue<QByteArray> reqQueue;
 };
 
 #endif // DIALOG_H
