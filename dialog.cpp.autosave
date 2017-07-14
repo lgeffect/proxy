@@ -6,17 +6,20 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+	
+	// Включение сервера
+	tcpServer = new QTcpServer(this);
+	connect(tcpServer, SIGNAL(newConnection()), SLOT(newConn()));
+	if(!tcpServer->listen(QHostAddress::Any, (quint16)ui->proxyPort->value()) && server_status == 0){
+		ui->textEdit->append(tcpServer->errorString());
+	}else{
+		server_status=1;
+	}
 }
 
 Dialog::~Dialog()
 {
     delete ui;
-	server_status = 0;
-}
-
-void Dialog::on_startIntercept_clicked()
-{
-	// Выключение сервера
 	if(server_status==1){
 		foreach(int i, SClients.keys()){
 			SClients[i]->close();
@@ -24,17 +27,13 @@ void Dialog::on_startIntercept_clicked()
 		}
 		tcpServer->close();
 		server_status=0;
-		ui->startIntercept->setChecked(false);
-	}else{ // Иначе включаем
-		tcpServer = new QTcpServer(this);
-		connect(tcpServer, SIGNAL(newConnection()), SLOT(newConn()));
-		if(!tcpServer->listen(QHostAddress::Any, (quint16)ui->proxyPort->value()) && server_status == 0){
-			ui->textEdit->append(tcpServer->errorString());
-		}else{
-			server_status=1;
-		}
-		ui->startIntercept->setChecked(true);
 	}
+	server_status = 0;
+}
+
+void Dialog::on_startIntercept_clicked()
+{
+
 }
 
 void Dialog::newConn(){

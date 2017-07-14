@@ -21,10 +21,10 @@ public:
     ~Dialog();
 
 private slots:
-    void on_pushButton_clicked();
-	void newUser();
-	void slotReadCLient();
-	void on_pushButton_2_clicked();
+	void on_startIntercept_clicked();
+	void newConn();
+	void slotReadClient();
+
 
 private:
 	Ui::Dialog *ui;
