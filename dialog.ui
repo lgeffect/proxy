@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>445</height>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>621</width>
-     <height>431</height>
+     <height>731</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -33,9 +33,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>90</y>
        <width>591</width>
-       <height>341</height>
+       <height>291</height>
       </rect>
      </property>
     </widget>
@@ -69,6 +69,32 @@
      </property>
      <property name="text">
       <string>Пропустить запрос</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="reqHost">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>591</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="debugEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>400</y>
+       <width>311</width>
+       <height>261</height>
+      </rect>
      </property>
     </widget>
    </widget>

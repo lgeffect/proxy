@@ -112,8 +112,7 @@ void Dialog::on_forwardRequest_clicked()
 		// Берем новый запрос из очереди
 		QString clientRequest = reqQueue.dequeue();
 		// Парсим хост из запроса
-		QString resolveHost = clientRequest.mid(clientRequest.indexOf("GET")+3, clientRequest.indexOf("HTTP/1.")-3);
-
+		QString resolveHost = 
 		// Показываем информацию о запросе
 		ui->proxyTextWindow->setText(clientRequest);
 		ui->reqHost->setText(resolveHost.trimmed());
